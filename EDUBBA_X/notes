@@ -1,0 +1,142 @@
+workflow
+
+right
+ok, so lets forget the ticketflyDB
+lets say edubba is empty, the first time you run the program it will make "main"
+
+
+the way that is created is the program goes to https://www.ticketfly.com/search/page/20/?q - 284/?q
+for each page that it calls it scrapes the JSON object that is on each page
+
+it places them into an array
+
+so we create an array that holds all the JSON object that are different events
+
+so lets step back
+the first thing that runs is getTotalPages()
+this goes to https://www.ticketfly.com/search/page/20/?q and then finds the total number of events
+
+so getTotalPages() runs. if you look at that function it goes to that page and looks for .search-results-message
+and parses that into a number
+and does Math.ceil(totalResults.split("&")[0]/100
+
+this finds us the total number of entries in the database on ticketfly and figures out how many pages there should be
+
+once that runs i have a bunch of code that runs in the callback()
+this code is calling each page in the https://www.ticketfly.com/search/page/+ page +/?q
+where page is the variable that created from the prior funciton
+run = function()      - line 950
+that function goes through all the pages and adds them to an array "dataArray"
+
+that uses getEvents
+and getEvents is the function that goes to the page and scrapes the JSON from the page and returns it
+so it passes that to the callback
+that is how we are populating the "dataArray"
+
+once all the pages are processed we run processEvents()
+this is the function that is prepping the data for the database
+if you look at line 981
+
+this is the line that determines the "id"
+
+what that is doing is taking the JSON object data for each event and using the data[entrie]["url"]
+as the basis for the ID
+this is because in their database each object has to have a unique URL
+so i figured that was a unique key we could use as our IDs
+
+
+what that is doing is taking the JSON object data for each event and using the data[entrie]["url"]
+as the basis for the ID
+this is because in their database each object has to have a unique URL
+so i figured that was a unique key we could use as our IDs
+but, MongoDB needs a 12 digit number as the ID
+so line 982 pads the number so they become 12 in total
+
+
+once the new dataArray is "processed" we run checkforDB()
+so if you go look at checkforDB()
+what does it do? well... first it opens the MongoClinet
+once it is open it looks for any object in the desired database collection
+
+if it has an error it reports it, else it looks to see if the result is null or not
+if it is null, it populates the database
+
+is going to return one object from the collection, assuming there are any objects in the collection
+
+lets say "main" does not exist in the database
+MongoDB does not have a function that can check for a collection
+you can't ask it, does "main" exist in the DB
+so the way you have to ask it is ask for findOne from a designated collection
+
+if the object it returns is "null" it means that the collection is empty or does not exist
+thus, if it is empty or does not exist we can populate "main" without a problem
+
+so line 254
+that block removes the tempDB, which is what we use to compare the database to the new data we cull
+
+so tempDB is the new dataset that is acquired each time the systems runs
+main is the aggregate from the prior runs
+
+
+we need to clear tempDB because it is really only part of what is now "main"
+so think of it this way, lets say we populated "main" last week
+
+so we place dataArray into tempDB
+so now we have "main" and "tempDB"
+where "main" is the old db, and "tempDB" is our new sample
+
+the way we process that is the next function after the cloneDB()
+so cloneDB() is just making a backup of "main" in case something happens
+
+so after cloneDB() runs we go back to
+line 989 compareAndReport()
+so this function is going to take all of "main" and all of "tempDB"
+and iterate thought the entire existing database and look for matching "_id" entries
+
+if a matching entry is found, it checks to see if the event status is the same
+also, if a match is found it removes it from the array
+it also adds the even to "newSoldOutEvents" collection
+if the status has changed
+
+so the reason for this program is to find events that are "soldOut"
+if it isn't sold out the status is "available" or something along those lines
+
+we want to know what events are "soldOut"
+
+but we don't just want to know which ones are sold out on the whole,
+but we want to create a mini report that lets the user know which events have sold out since the last time we ran the program
+so once we have checked all of the objects that exist in the "main" collection against "tempDB"
+we then have to see if any of the remaining events that are "new" are sold out
+
+
+if they are sold out we add them to the "newSoldOutEvents" collection as well
+yes, sold out on the whole is  all of the sold out events in the database
+
+once all the sold out events are detected the remaining events in the array form tempDB are added to the "main" collection
+also, the objects that are now in newSoldOut are also appended to the "main" collection
+ie, the updated status is set on the existing objects
+
+eventually we will need to have an archive function that eliminates events that are older than some time
+because we also want a maser list of events
+we create two reports
+one report is all of the sold out events and one is the new sold out events
+
+if you look in the repo do you see FullReport.html and NewSoldOutReport.html
+we always want to be able to make both of those documents
+
+it is a rare problem
+sometimes the scraping process takes too long and by the time we pull a page tickeyfly has added a new event to their database
+and that causes us to have a duplicate event in our dataArray
+or they will have an even listed in two places with a different name, but the same event ID
+so when we go to put it in the mongo it errs as there is already an event with that id
+it would be good to be able to loop through the dataArray
+once it is processed to make sure there are not multiple entries with the same "_id"
+the only other issue with the code is it is a MESS!!!!
+
+but what i mean is like line 940
+from 940 - 970
+that should be a function of some sort, not just code in a random callback
+
+runEDDUBA is just a sloppy way of making main()
+well, not really, as main() is later
+i need to go to bed man, i think yo got this

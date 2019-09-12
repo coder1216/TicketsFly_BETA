@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+}
+
+.container {
+    margin: auto;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.schedule {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.header {
+    height: 30px;
+    width: 100%;
+    background: transparent;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.header h3 {
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    top: 50%;
+    font-family: Montserrat;
+    font-size: 1em;
+    font-weight: 100;
+    transform: translateY(-50%);
+    user-select: none;
+}
+
+.align-block {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.header-item {
+    width: 100%;
+    height: 100%;
+    margin: 2px;
+}
+
+.days-wrapper {
+    width: 100%;
+    height: 500px;
+    background: transparent;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.hour-header {
+    display: flex;
+    flex-direction: column;
+    margin: 2px;
+    background: transparent;
+    width: 100%;
+}
+
+.hour-header-item {
+    width: 100%;
+    height: 100%;
+    border: 1px white;
+    border-style: solid;
+}
+
+.hour-header-item h5 {
+    color: black;
+    margin: 0;
+    text-align: right;
+    vertical-align: middle;
+    position: relative;
+    top: 50%;
+    font-family: Montserrat;
+    font-size: 1em;
+    font-weight: 100;
+    transform: translateY(-50%);
+    padding-right: 10%;
+    user-select: none;
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    margin: 1px;
+    background: transparent;
+    width: 100%;
+}
+
+.hour {
+    background: #dddddd;
+    margin-bottom: 2px;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}
+
+.hover {
+    background: #727bad;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    box-shadow: none;
+}
+
+.selected {
+    background: #9aa7ee;
+}

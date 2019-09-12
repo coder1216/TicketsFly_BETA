@@ -1,0 +1,80 @@
+{
+  "settings" : {
+    "mongoDB" : "Local Database"
+  },
+  "mongoDB" : {
+    "servers" : {
+      "Local Database": {
+        "host": "localhost",
+        "port": "27017",
+        "user": "",
+        "password": "",
+        "database": "edubba",
+        "nickName": "Remote Database",
+        "collection" : "ticketfly"
+      },
+      "Remote Database": {
+        "host": "localhost",
+        "port": "27017",
+        "user": "",
+        "password": "",
+        "database": "edubba",
+        "nickName": "Remote Database",
+        "collection" : "ticketfly"
+      }
+    }
+  },
+  "debug" : true,
+  "schedule" : {
+    "monday" : [
+      {
+        "time":"18:00",
+        "zone" : "UTC-5"
+      }
+    ],
+    "tuesday" : [
+      {
+        "time": "18:00",
+        "zone" : "UTC-5"
+      }
+    ],
+    "wednesday" : [
+      {
+        "time": "18:00",
+        "zone" : "UTC-5"
+      }
+    ],
+    "thursday"  : [
+      {
+        "time": "18:00",
+        "zone" : "UTC-5"
+      }
+    ],
+    "friday" : [
+      {
+        "time": "12:30",
+        "zone" : "UTC-5"
+      },
+      {
+        "time": "18:59",
+        "zone" : "UTC-5"
+      }
+    ],
+    "saturday" : [
+      {
+        "time": "10:00",
+        "zone" : "UTC-5"
+      },
+      {
+        "time": "18:00",
+        "zone" : "UTC-5"
+      }
+    ],
+    "sunday"  : [
+      {
+        "time": "18:00",
+        "zone" : "UTC-5"
+      }
+    ]
+  }
+}
